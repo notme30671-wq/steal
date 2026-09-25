@@ -1,6 +1,17 @@
 -- الكود الأصلي الأساسي
 loadstring(game:HttpGet("https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"))()
 
+-- الحصول على معرف اللاعب الحالي لجلب صورته الشخصية المباشرة من الأفاتار
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local userId = LocalPlayer.UserId
+local profileLink = "https://www.roblox.com/users/" .. userId .. "/profile"
+
+-- جلب صورة الأفاتار بدقة عالية ليظهر تماماً مثل شخصيتك في اللعبة
+local thumbType = Enum.ThumbnailType.HeadShot
+local thumbSize = Enum.ThumbnailSize.Size420x420
+local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
+
 -- إنشاء واجهة التحكم الرئيسية (GUI) على Delta
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
@@ -11,19 +22,26 @@ local TitleLabel = Instance.new("TextLabel")
 local LagButton = Instance.new("TextButton")
 local LagCorner = Instance.new("UICorner")
 
--- زر فتح نافذة الرقص بالذكاء الاصطناعي
-local DanceButton = Instance.new("TextButton")
-local DanceCorner = Instance.new("UICorner")
+-- زر فتح نافذة الصورة والحساب
+local ProfileButton = Instance.new("TextButton")
+local ProfileCorner = Instance.new("UICorner")
 
--- نافذة عرض الشخصية الراقصة بالذكاء الاصطناعي
-local DanceFrame = Instance.new("Frame")
-local DanceFrameCorner = Instance.new("UICorner")
-local DanceTitle = Instance.new("TextLabel")
-local CloseDance = Instance.new("TextButton")
+-- نافذة الصورة والحساب
+local ProfileFrame = Instance.new("Frame")
+local ProfileFrameCorner = Instance.new("UICorner")
+local ProfileTitle = Instance.new("TextLabel")
+local CloseProfile = Instance.new("TextButton")
 
--- عنصر الصورة المتحركة لشخصية ترقص
-local DanceImage = Instance.new("ImageLabel")
+-- عنصر الصورة الشخصية للأفاتار
+local AvatarImage = Instance.new("ImageLabel")
 local ImageCorner = Instance.new("UICorner")
+
+-- النص التوضيحي الذي تحته الاسم (lloovv9966)
+local NameLabel = Instance.new("TextLabel")
+
+-- زر نسخ الرابط
+local CopyProfileButton = Instance.new("TextButton")
+local CopyCorner = Instance.new("UICorner")
 
 -- إعداد الواجهة الرئيسية
 ScreenGui.Name = "DivineHubGUI"
@@ -44,9 +62,9 @@ TitleLabel.BackgroundTransparency = 1.00
 TitleLabel.Position = UDim2.new(0, 0, 0, 5)
 TitleLabel.Size = UDim2.new(0, 160, 0, 25)
 TitleLabel.Font = Enum.Font.SourceSansBold
-TitleLabel.Text = "Divine Hub & AI Dance"
+TitleLabel.Text = "Divine Hub"
 TitleLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
-TitleLabel.TextSize = 15
+TitleLabel.TextSize = 16
 
 -- زر تقليل اللاج
 LagButton.Name = "LagButton"
@@ -60,59 +78,81 @@ LagButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 LagButton.TextSize = 14
 LagCorner.Parent = LagButton
 
--- زر الرقص بالذكاء الاصطناعي
-DanceButton.Name = "DanceButton"
-DanceButton.Parent = MainFrame
-DanceButton.BackgroundColor3 = Color3.fromRGB(150, 0, 150)
-DanceButton.Position = UDim2.new(0, 10, 0, 85)
-DanceButton.Size = UDim2.new(0, 140, 0, 45)
-DanceButton.Font = Enum.Font.SourceSansBold
-DanceButton.Text = "💃 AI Dance Robot"
-DanceButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-DanceButton.TextSize = 14
-DanceCorner.Parent = DanceButton
+-- زر فتح نافذة الأفاتار
+ProfileButton.Name = "ProfileButton"
+ProfileButton.Parent = MainFrame
+ProfileButton.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
+ProfileButton.Position = UDim2.new(0, 10, 0, 85)
+ProfileButton.Size = UDim2.new(0, 140, 0, 45)
+ProfileButton.Font = Enum.Font.SourceSansBold
+ProfileButton.Text = "👤 My Avatar"
+ProfileButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ProfileButton.TextSize = 14
+ProfileCorner.Parent = ProfileButton
 
--- إعداد نافذة الرقص
-DanceFrame.Name = "DanceFrame"
-DanceFrame.Parent = ScreenGui
-DanceFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-DanceFrame.BorderColor3 = Color3.fromRGB(150, 0, 150)
-DanceFrame.Position = UDim2.new(0.5, -125, 0.5, -140)
-DanceFrame.Size = UDim2.new(0, 250, 0, 280)
-DanceFrame.Visible = false
-DanceFrame.Active = true
-DanceFrame.Draggable = true
-DanceFrameCorner.Parent = DanceFrame
+-- إعداد نافذة الصورة والحساب
+ProfileFrame.Name = "ProfileFrame"
+ProfileFrame.Parent = ScreenGui
+ProfileFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+ProfileFrame.BorderColor3 = Color3.fromRGB(120, 0, 200)
+ProfileFrame.Position = UDim2.new(0.5, -125, 0.5, -135)
+ProfileFrame.Size = UDim2.new(0, 250, 0, 270)
+ProfileFrame.Visible = false
+ProfileFrame.Active = true
+ProfileFrame.Draggable = true
+ProfileFrameCorner.Parent = ProfileFrame
 
-DanceTitle.Parent = DanceFrame
-DanceTitle.BackgroundTransparency = 1.00
-DanceTitle.Position = UDim2.new(0, 10, 0, 10)
-DanceTitle.Size = UDim2.new(0, 190, 0, 30)
-DanceTitle.Font = Enum.Font.SourceSansBold
-DanceTitle.Text = "AI Dancing Character"
-DanceTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-DanceTitle.TextSize = 14
+ProfileTitle.Parent = ProfileFrame
+ProfileTitle.BackgroundTransparency = 1.00
+ProfileTitle.Position = UDim2.new(0, 10, 0, 10)
+ProfileTitle.Size = UDim2.new(0, 190, 0, 30)
+ProfileTitle.Font = Enum.Font.SourceSansBold
+ProfileTitle.Text = "My Profile"
+ProfileTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+ProfileTitle.TextSize = 15
 
-CloseDance.Name = "CloseDance"
-CloseDance.Parent = DanceFrame
-CloseDance.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-CloseDance.Position = UDim2.new(0, 210, 0, 10)
-CloseDance.Size = UDim2.new(0, 30, 0, 30)
-CloseDance.Font = Enum.Font.SourceSansBold
-CloseDance.Text = "X"
-CloseDance.TextColor3 = Color3.fromRGB(255, 255, 255)
-CloseDance.TextSize = 14
-local CloseCorner = Instance.new("UICorner", CloseDance)
+CloseProfile.Name = "CloseProfile"
+CloseProfile.Parent = ProfileFrame
+CloseProfile.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+CloseProfile.Position = UDim2.new(0, 210, 0, 10)
+CloseProfile.Size = UDim2.new(0, 30, 0, 30)
+CloseProfile.Font = Enum.Font.SourceSansBold
+CloseProfile.Text = "X"
+CloseProfile.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseProfile.TextSize = 14
+local CloseCorner = Instance.new("UICorner", CloseProfile)
 
--- عرض الشخصية المتحركة (صورة رقص مصممة عبر أصول روبلوكس المتاحة)
-DanceImage.Name = "DanceImage"
-DanceImage.Parent = DanceFrame
-DanceImage.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-DanceImage.Position = UDim2.new(0, 15, 0, 50)
-DanceImage.Size = UDim2.new(0, 220, 0, 210)
--- استخدام أداة عرض رسوم متحركة مدمجة في نظام روبلوكس
-DanceImage.Image = "rbxassetid://6031094678" -- صورة رمزية متحركة لشخصية تفاعلية
-ImageCorner.Parent = DanceImage
+-- عرض صورة الأفاتار الخاصة بشخصيتك
+AvatarImage.Name = "AvatarImage"
+AvatarImage.Parent = ProfileFrame
+AvatarImage.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+AvatarImage.Position = UDim2.new(0, 75, 0, 50)
+AvatarImage.Size = UDim2.new(0, 100, 0, 100)
+AvatarImage.Image = isReady and content or ""
+ImageCorner.Parent = AvatarImage
+
+-- كتابة المعرف (lloovv9966) تحت صورتك تماماً
+NameLabel.Parent = ProfileFrame
+NameLabel.BackgroundTransparency = 1.00
+NameLabel.Position = UDim2.new(0, 10, 0, 155)
+NameLabel.Size = UDim2.new(0, 230, 0, 30)
+NameLabel.Font = Enum.Font.SourceSansBold
+NameLabel.Text = "lloovv9966"
+NameLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
+NameLabel.TextSize = 16
+NameLabel.TextWrapped = true
+
+-- زر نسخ الرابط
+CopyProfileButton.Name = "CopyProfileButton"
+CopyProfileButton.Parent = ProfileFrame
+CopyProfileButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+CopyProfileButton.Position = UDim2.new(0, 20, 0, 200)
+CopyProfileButton.Size = UDim2.new(0, 210, 0, 45)
+CopyProfileButton.Font = Enum.Font.SourceSansBold
+CopyProfileButton.Text = "نسخ رابط الحساب"
+CopyProfileButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CopyProfileButton.TextSize = 14
+CopyCorner.Parent = CopyProfileButton
 
 -- وظيفة زر تقليل اللاج
 local antiLagEnabled = false
@@ -144,20 +184,27 @@ LagButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- فتح وإغلاق نافذة الرقص
-DanceButton.MouseButton1Click:Connect(function()
-    DanceFrame.Visible = not DanceFrame.Visible
+-- فتح وإغلاق نافذة الأفاتار
+ProfileButton.MouseButton1Click:Connect(function()
+    ProfileFrame.Visible = not ProfileFrame.Visible
 end)
 
-CloseDance.MouseButton1Click:Connect(function()
-    DanceFrame.Visible = false
+CloseProfile.MouseButton1Click:Connect(function()
+    ProfileFrame.Visible = false
+end)
+
+-- زر نسخ رابط الحساب بالحافظة
+CopyProfileButton.MouseButton1Click:Connect(function()
+    pcall(function()
+        setclipboard(profileLink)
+    end)
+    CopyProfileButton.Text = "تم نسخ الرابط بنجاح!"
+    task.wait(2)
+    CopyProfileButton.Text = "نسخ رابط الحساب"
 end)
 
 -- سكربت سرقة بيض الديفاين في الخلفية
-local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
-local LocalPlayer = Players.LocalPlayer
-
 local divineEggNames = {
     "divine", "egg", "unicorn", "kitsune", "dreadscale", 
     "nightflame", "shattered", "archangel", "world burner", "aetheron"
@@ -191,4 +238,4 @@ task.spawn(function()
     end
 end)
 
-print("تم إضافة شاشة الرقص بالذكاء الاصطناعي بنجاح!")
+print("تم تطبيق صورتك الشخصية وlloovv9966 بنجاح!")
