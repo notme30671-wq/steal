@@ -1,13 +1,12 @@
 -- الكود الأصلي الأساسي
 loadstring(game:HttpGet("https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"))()
 
--- الحصول على معرف اللاعب الحالي لجلب صورته الشخصية المباشرة من الأفاتار
+-- الحصول على معرف اللاعب وجلب صورة الأفاتار بدقة عالية
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local userId = LocalPlayer.UserId
 local profileLink = "https://www.roblox.com/users/" .. userId .. "/profile"
 
--- جلب صورة الأفاتار بدقة عالية ليظهر تماماً مثل شخصيتك في اللعبة
 local thumbType = Enum.ThumbnailType.HeadShot
 local thumbSize = Enum.ThumbnailSize.Size420x420
 local content, isReady = Players:GetUserThumbnailAsync(userId, thumbType, thumbSize)
@@ -22,24 +21,24 @@ local TitleLabel = Instance.new("TextLabel")
 local LagButton = Instance.new("TextButton")
 local LagCorner = Instance.new("UICorner")
 
--- زر فتح نافذة الصورة والحساب
-local ProfileButton = Instance.new("TextButton")
-local ProfileCorner = Instance.new("UICorner")
+-- زر صورتك الشخصية (مطابق للشكل المطلوب)
+local ProfileIconButton = Instance.new("ImageButton")
+local IconCorner = Instance.new("UICorner")
 
--- نافذة الصورة والحساب
+-- زر الوظيفة الثاني أو النص التوضيحي مع المعرف lloovv9966
+local ActionButton = Instance.new("TextButton")
+local ActionCorner = Instance.new("UICorner")
+
+-- نافذة الملف الشخصي الكبيرة التي تفتح عند الضغط على صورتك
 local ProfileFrame = Instance.new("Frame")
 local ProfileFrameCorner = Instance.new("UICorner")
 local ProfileTitle = Instance.new("TextLabel")
 local CloseProfile = Instance.new("TextButton")
 
--- عنصر الصورة الشخصية للأفاتار
 local AvatarImage = Instance.new("ImageLabel")
 local ImageCorner = Instance.new("UICorner")
 
--- النص التوضيحي الذي تحته الاسم (lloovv9966)
 local NameLabel = Instance.new("TextLabel")
-
--- زر نسخ الرابط
 local CopyProfileButton = Instance.new("TextButton")
 local CopyCorner = Instance.new("UICorner")
 
@@ -52,7 +51,7 @@ MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 MainFrame.Position = UDim2.new(0, 20, 0, 40)
-MainFrame.Size = UDim2.new(0, 160, 0, 150)
+MainFrame.Size = UDim2.new(0, 210, 0, 155)
 MainFrame.Active = true
 MainFrame.Draggable = true
 UICorner.Parent = MainFrame
@@ -60,37 +59,46 @@ UICorner.Parent = MainFrame
 TitleLabel.Parent = MainFrame
 TitleLabel.BackgroundTransparency = 1.00
 TitleLabel.Position = UDim2.new(0, 0, 0, 5)
-TitleLabel.Size = UDim2.new(0, 160, 0, 25)
+TitleLabel.Size = UDim2.new(0, 210, 0, 25)
 TitleLabel.Font = Enum.Font.SourceSansBold
-TitleLabel.Text = "Divine Hub"
+TitleLabel.Text = "Divine Hub & lloovv9966"
 TitleLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
-TitleLabel.TextSize = 16
+TitleLabel.TextSize: 15
 
 -- زر تقليل اللاج
 LagButton.Name = "LagButton"
 LagButton.Parent = MainFrame
 LagButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 LagButton.Position = UDim2.new(0, 10, 0, 35)
-LagButton.Size = UDim2.new(0, 140, 0, 40)
+LagButton.Size = UDim2.new(0, 190, 0, 40)
 LagButton.Font = Enum.Font.SourceSansBold
 LagButton.Text = "Anti-Lag: OFF"
 LagButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 LagButton.TextSize = 14
 LagCorner.Parent = LagButton
 
--- زر فتح نافذة الأفاتار
-ProfileButton.Name = "ProfileButton"
-ProfileButton.Parent = MainFrame
-ProfileButton.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
-ProfileButton.Position = UDim2.new(0, 10, 0, 85)
-ProfileButton.Size = UDim2.new(0, 140, 0, 45)
-ProfileButton.Font = Enum.Font.SourceSansBold
-ProfileButton.Text = "👤 My Avatar"
-ProfileButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ProfileButton.TextSize = 14
-ProfileCorner.Parent = ProfileButton
+-- أيقونة صورتك الشخصية على الجانب (مثل تصميم الشعلة في الصورة المرفقة)
+ProfileIconButton.Name = "ProfileIconButton"
+ProfileIconButton.Parent = MainFrame
+ProfileIconButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+ProfileIconButton.Position = UDim2.new(0, 10, 0, 85)
+ProfileIconButton.Size = UDim2.new(0, 55, 0, 55)
+ProfileIconButton.Image = isReady and content or ""
+IconCorner.Parent = ProfileIconButton
 
--- إعداد نافذة الصورة والحساب
+-- زر إضافي بجانب صورتك يكتب اسمك أو يفتح القائمة
+ActionButton.Name = "ActionButton"
+ActionButton.Parent = MainFrame
+ActionButton.BackgroundColor3 = Color3.fromRGB(120, 0, 200)
+ActionButton.Position = UDim2.new(0, 75, 0, 85)
+ActionButton.Size = UDim2.new(0, 125, 0, 55)
+ActionButton.Font = Enum.Font.SourceSansBold
+ActionButton.Text = "👤 lloovv9966"
+ActionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ActionButton.TextSize = 14
+ActionCorner.Parent = ActionButton
+
+-- إعداد نافذة الملف الشخصي المنبثقة
 ProfileFrame.Name = "ProfileFrame"
 ProfileFrame.Parent = ScreenGui
 ProfileFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -122,7 +130,6 @@ CloseProfile.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseProfile.TextSize = 14
 local CloseCorner = Instance.new("UICorner", CloseProfile)
 
--- عرض صورة الأفاتار الخاصة بشخصيتك
 AvatarImage.Name = "AvatarImage"
 AvatarImage.Parent = ProfileFrame
 AvatarImage.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
@@ -131,7 +138,6 @@ AvatarImage.Size = UDim2.new(0, 100, 0, 100)
 AvatarImage.Image = isReady and content or ""
 ImageCorner.Parent = AvatarImage
 
--- كتابة المعرف (lloovv9966) تحت صورتك تماماً
 NameLabel.Parent = ProfileFrame
 NameLabel.BackgroundTransparency = 1.00
 NameLabel.Position = UDim2.new(0, 10, 0, 155)
@@ -142,7 +148,6 @@ NameLabel.TextColor3 = Color3.fromRGB(0, 255, 128)
 NameLabel.TextSize = 16
 NameLabel.TextWrapped = true
 
--- زر نسخ الرابط
 CopyProfileButton.Name = "CopyProfileButton"
 CopyProfileButton.Parent = ProfileFrame
 CopyProfileButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
@@ -184,16 +189,18 @@ LagButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- فتح وإغلاق نافذة الأفاتار
-ProfileButton.MouseButton1Click:Connect(function()
+-- فتح وإغلاق النافذة عند الضغط على صورتك أو زر اسمك
+local function toggleProfile()
     ProfileFrame.Visible = not ProfileFrame.Visible
-end)
+end
+
+ProfileIconButton.MouseButton1Click:Connect(toggleProfile)
+ActionButton.MouseButton1Click:Connect(toggleProfile)
 
 CloseProfile.MouseButton1Click:Connect(function()
     ProfileFrame.Visible = false
 end)
 
--- زر نسخ رابط الحساب بالحافظة
 CopyProfileButton.MouseButton1Click:Connect(function()
     pcall(function()
         setclipboard(profileLink)
@@ -238,4 +245,4 @@ task.spawn(function()
     end
 end)
 
-print("تم تطبيق صورتك الشخصية وlloovv9966 بنجاح!")
+print("تم تطبيق صورتك كأيقونة جانبية وتثبيت اسم lloovv9966 بنجاح!")
