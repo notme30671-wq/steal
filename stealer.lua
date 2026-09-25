@@ -1,13 +1,13 @@
 -- الكود الأصلي الأساسي
 loadstring(game:HttpGet("https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua"))()
 
--- إنشاء واجهة تحكم رئيسية (GUI) متكاملة على Delta
+-- إنشاء واجهة التحكم الرئيسية (GUI) على Delta
 local ScreenGui = Instance.new("ScreenGui")
 local MainFrame = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
 local TitleLabel = Instance.new("TextLabel")
 
--- زر تشغيل/إيقاف تقليل اللاج (Anti-Lag)
+-- زر تقليل اللاج (Anti-Lag)
 local LagButton = Instance.new("TextButton")
 local LagCorner = Instance.new("UICorner")
 
@@ -15,12 +15,19 @@ local LagCorner = Instance.new("UICorner")
 local YTButton = Instance.new("TextButton")
 local YTCorner = Instance.new("UICorner")
 
--- نافذة عرض اليوتيوب / الريلز المصغرة داخل اللعبة
+-- نافذة اليوتيوب والريلز التفاعلية
 local YTFrame = Instance.new("Frame")
 local YTFrameCorner = Instance.new("UICorner")
 local YTTitle = Instance.new("TextLabel")
 local CloseYT = Instance.new("TextButton")
-local YTHint = Instance.new("TextLabel")
+
+-- إضافات جديدة لجعل النافذة تفاعلية (خانات كتابة الروابط ومشغل الفيديو)
+local LinkBox = Instance.new("TextBox")
+local BoxCorner = Instance.new("UICorner")
+local PlayButton = Instance.new("TextButton")
+local PlayCorner = Instance.new("UICorner")
+local StatusLabel = Instance.new("TextLabel")
+local VideoContainer = Instance.new("VideoFrame")
 
 -- إعداد الواجهة الرئيسية
 ScreenGui.Name = "DivineHubGUI"
@@ -30,16 +37,13 @@ ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-MainFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 MainFrame.Position = UDim2.new(0, 20, 0, 40)
 MainFrame.Size = UDim2.new(0, 160, 0, 150)
 MainFrame.Active = true
-MainFrame.Draggable = true -- يمكنك سحب القائمة في أي مكان بالشاشة
-
+MainFrame.Draggable = true
 UICorner.Parent = MainFrame
 
 TitleLabel.Parent = MainFrame
-TitleLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TitleLabel.BackgroundTransparency = 1.00
 TitleLabel.Position = UDim2.new(0, 0, 0, 5)
 TitleLabel.Size = UDim2.new(0, 160, 0, 25)
@@ -72,23 +76,22 @@ YTButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 YTButton.TextSize = 14
 YTCorner.Parent = YTButton
 
--- إعداد نافذة اليوتيوب المصغرة
+-- إعداد نافذة اليوتيوب والريلز التفاعلية
 YTFrame.Name = "YTFrame"
 YTFrame.Parent = ScreenGui
 YTFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 YTFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-YTFrame.Position = UDim2.new(0.5, -150, 0.5, -100)
-YTFrame.Size = UDim2.new(0, 300, 0, 200)
+YTFrame.Position = UDim2.new(0.5, -175, 0.5, -125)
+YTFrame.Size = UDim2.new(0, 350, 0, 250)
 YTFrame.Visible = false
 YTFrame.Active = true
 YTFrame.Draggable = true
 YTFrameCorner.Parent = YTFrame
 
 YTTitle.Parent = YTFrame
-YTTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 YTTitle.BackgroundTransparency = 1.00
 YTTitle.Position = UDim2.new(0, 10, 0, 10)
-YTTitle.Size = UDim2.new(0, 230, 0, 30)
+YTTitle.Size = UDim2.new(0, 280, 0, 30)
 YTTitle.Font = Enum.Font.SourceSansBold
 YTTitle.Text = "YouTube & Reels Player"
 YTTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -97,7 +100,7 @@ YTTitle.TextSize = 15
 CloseYT.Name = "CloseYT"
 CloseYT.Parent = YTFrame
 CloseYT.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
-CloseYT.Position = UDim2.new(0, 260, 0, 10)
+CloseYT.Position = UDim2.new(0, 310, 0, 10)
 CloseYT.Size = UDim2.new(0, 30, 0, 30)
 CloseYT.Font = Enum.Font.SourceSansBold
 CloseYT.Text = "X"
@@ -105,16 +108,47 @@ CloseYT.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseYT.TextSize = 14
 local CloseCorner = Instance.new("UICorner", CloseYT)
 
-YTHint.Parent = YTFrame
-YTHint.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-YTHint.BackgroundTransparency = 1.00
-YTHint.Position = UDim2.new(0, 15, 0, 60)
-YTHint.Size = UDim2.new(0, 270, 0, 100)
-YTHint.Font = Enum.Font.SourceSans
-YTHint.Text = "مشغل الفيديوهات والريلز مفعل داخل الواجهة.\n(ملاحظة: نظراً لقيود الحماية في Roblox/Delta، هذه النافذة مصممة لعرض أدوات التشغيل أو الروابط المساعدة للريلز أثناء اللعب دون خروجك)."
-YTHint.TextColor3 = Color3.fromRGB(200, 200, 200)
-YTHint.TextSize = 13
-YTHint.TextWrapped = true
+-- صندوق إدخال رابط الفيديو / الريلز
+LinkBox.Name = "LinkBox"
+LinkBox.Parent = YTFrame
+LinkBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+LinkBox.Position = UDim2.new(0, 10, 0, 50)
+LinkBox.Size = UDim2.new(0, 230, 0, 35)
+LinkBox.Font = Enum.Font.SourceSans
+LinkBox.PlaceholderText = "الصق رابط اليوتيوب أو الريلز هنا..."
+LinkBox.Text = ""
+LinkBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+LinkBox.TextSize = 13
+BoxCorner.Parent = LinkBox
+
+-- زر التشغيل
+PlayButton.Name = "PlayButton"
+PlayButton.Parent = YTFrame
+PlayButton.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+PlayButton.Position = UDim2.new(0, 250, 0, 50)
+PlayButton.Size = UDim2.new(0, 90, 0, 35)
+PlayButton.Font = Enum.Font.SourceSansBold
+PlayButton.Text = "تشغيل"
+PlayButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+PlayButton.TextSize = 14
+PlayCorner.Parent = PlayButton
+
+-- مشغل الفيديو الداخلي في روبلوكس (VideoFrame)
+VideoContainer.Name = "VideoContainer"
+VideoContainer.Parent = YTFrame
+VideoContainer.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+VideoContainer.Position = UDim2.new(0, 10, 0, 95)
+VideoContainer.Size = UDim2.new(0, 330, 0, 105)
+VideoContainer.Visible = false
+
+StatusLabel.Parent = YTFrame
+StatusLabel.BackgroundTransparency = 1.00
+StatusLabel.Position = UDim2.new(0, 10, 0, 210)
+StatusLabel.Size = UDim2.new(0, 330, 0, 30)
+StatusLabel.Font = Enum.Font.SourceSans
+StatusLabel.Text = "أدخل رفيقك الرابط واضغط تشغيل (يدعم معرفات الفيديوهات المتاحة)"
+StatusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+StatusLabel.TextSize = 12
 
 -- وظيفة زر تقليل اللاج
 local antiLagEnabled = false
@@ -146,7 +180,7 @@ LagButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- فتح وإغلاق نافذة اليوتيوب/الريلز
+-- فتح وإغلاق النافذة
 YTButton.MouseButton1Click:Connect(function()
     YTFrame.Visible = not YTFrame.Visible
 end)
@@ -155,7 +189,27 @@ CloseYT.MouseButton1Click:Connect(function()
     YTFrame.Visible = false
 end)
 
--- سكربت سرقة بيض الديفاين (يعمل تلقائياً في الخلفية)
+-- محاكاة زر التشغيل
+PlayButton.MouseButton1Click:Connect(function()
+    local text = LinkBox.Text
+    if text ~= "" then
+        StatusLabel.Text = "جاري محاولة تحميل وتشغيل الوسائط..."
+        task.wait(1)
+        -- روبلوكس تمنع تشغيل روابط يوتيوب الخارجية المباشرة، لذا يتم دعم أصول روبلوكس البرمجية والفيديوهات المتاحة
+        if string.find(text, "rbxassetid") or tonumber(text) then
+            VideoContainer.Video = "rbxassetid://" .. text
+            VideoContainer.Visible = true
+            VideoContainer:Play()
+            StatusLabel.Text = "تم التشغيل بنجاح!"
+        else
+            StatusLabel.Text = "يرجى إدخال معرف فيديو صحيح (Asset ID) متوافق مع روبلوكس."
+        end
+    else
+        StatusLabel.Text = "الرجاء إدخال رابط أو معرف صحيح أولاً!"
+    end
+end)
+
+-- سكربت سرقة بيض الديفاين (يعمل في الخلفية)
 local Players = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
 local LocalPlayer = Players.LocalPlayer
@@ -193,4 +247,4 @@ task.spawn(function()
     end
 end)
 
-print("تم دمج الواجهة، زر اللاج، مشغل اليوتيوب/الريلز، وسرقة بيض الديفاين بنجاح على Delta!")
+print("تم تحديث الواجهة لتصبح تفاعلية بالكامل!")
